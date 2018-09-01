@@ -55,12 +55,20 @@ let onRequest = function (res, method, pathname, params){
 		default:
 			res.writeHead(404);
 			return res.end();
-			// break;
-			// res.end('response! ', pathname); // For all response
 	}
 }
 
-let response = function (res, packet) {
-	res.write(200, { 'Content-Type': 'application/json' });
-	res.end(JSON.stringify(packet));
+/*
+	let 으로 설정할 경우, 아래와 같은 오류 발생 
+	TypeError [ERR_INVALID_ARG_TYPE]: The first argument must be one of type string or Buffer
+*/
+// let response = function (res, packet) {
+// 	console.log('in response function in server.js', arguments);
+// 	res.write(200, { 'Content-Type': 'application/json' });
+// 	res.end(JSON.stringify(packet));
+// }
+
+function response(res, packet) {
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify(packet));
 }
