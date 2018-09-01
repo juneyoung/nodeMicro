@@ -31,3 +31,6 @@ mysql> flush privileges;
 
 #### 03. `POST` 호출시 전송타입의 문제
 `POST` 요청 chunk 를 가져와서 데이타를 만듬에 있어 책의 소스 코드는 `form-data` 방식으로 처리할 수 없다. 포스트맨과 같은 테스트 툴을 사용해야 한다면 반드시 `x-www-form-urlencoded` 로 처리해야만 함 
+
+#### 04. `node.js` export 의 특수성
+`export default function;` 구문이 동작하지 않음. `module.export = function;` 으로 해야만 컴파일 가능 
