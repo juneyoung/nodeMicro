@@ -29,21 +29,16 @@ class tcpServer {
 
 
 				let key = socket.remoteAddress + ':' +socket.remotePort;
-				let sz = this.merge[key] ? this.merge[key] + data.toString() : this.toString();
+				let sz = this.merge[key] ? this.merge[key] + data.toString() : data.toString();
 				let arr = sz.split(delimeter);
-
-				console.log('서버의 데이터 수신 이벤트 , key : ', key, ' , arr : ' , arr);
 
 				for(let n in arr) {
 					if(sz.charAt(sz.length - 1) != delimeter && arr.length -1 == n) {
-						console.log(1);
 						this.merge[key] = arr[n];
 						break;
 					} else if(arr[n] == '') {
-						console.log(2);
 						break;
 					} else {
-						console.log('aaaaaaaa ', JSON.stringify(arr[n])); // Object object
 						this.onRead(socket, JSON.parse(arr[n]));
 					}
 

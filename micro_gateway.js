@@ -103,7 +103,7 @@ function onDistribute (data) {
 
 			for(var m in node.urls) {
 				let urlKey = node.urls[m];
-				if(!mapUrls[urlKey]) mapUrls[key] = [];
+				if(!mapUrls[urlKey]) mapUrls[urlKey] = [];
 				mapUrls[urlKey].push(client);
 			}
 
@@ -143,9 +143,7 @@ function onErrorClient (options) {
 
 function onRequest (res, method, pathname, params) {
 
-	console.log('gateway onRequest');
-
-	let key = method + pathname;	// POST/members
+	let key = method.toUpperCase() + pathname;	// POST/members
 	let client = mapUrls[key];
 
 	console.log('gateway onRequest', key, client);
