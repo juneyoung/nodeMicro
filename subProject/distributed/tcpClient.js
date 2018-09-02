@@ -22,7 +22,7 @@ class tcpClient {
 
 tcpClient.prototype.connect = function () {
 	this.client = net.connect(this.options, () => {
-		if(this.onCreate) this.onCreate(options);
+		if(this.onCreate) this.onCreate(this.options);
 	});
 
 	// data 이벤트 정의

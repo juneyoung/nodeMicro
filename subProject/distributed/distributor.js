@@ -5,7 +5,7 @@ const delimeter = '|';
 
 class distributor extends require('./tcpServer.js') {
 	constructor(){
-		super('distributor', 9000, [ "POST/distributors", "GET/distributors"]);
+		super('distributor', 9000, [ "POST/distributes", "GET/distributes"]);
 	}
 
 	onCreate (socket) {
@@ -25,7 +25,7 @@ class distributor extends require('./tcpServer.js') {
 		let key = socket.remoteAddress + ':' + socket.remotePort;
 		console.log('onRead', key, json);
 
-		if(json.uri == '/distributors' && json.method == 'POST') {
+		if(json.uri == '/distributes' && json.method == 'POST') {
 			// 등록
 			map[key] = {
 				socket : socket
@@ -45,7 +45,7 @@ class distributor extends require('./tcpServer.js') {
 
 	sendInfo (socket) {
 		let packet = {
-			uri : '/distributors'
+			uri : '/distributes'
 			, method : 'GET'
 			, key : 0
 			, params : []
