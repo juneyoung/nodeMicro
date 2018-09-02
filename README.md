@@ -1,8 +1,21 @@
 # nodeMicro
 sample microservice implemented by node.js = original : Node.js 마이크로 서비스 코딩공작소
 
+## 01. 수행
 
-## 책에는 나와있지 않아
+마이크로서비스의 구동. ex> 상품 마이크로 서비스
+```
+# Terminal 01
+$> node subProject/distributed/distributor.js
+
+# Terminal 02
+$> node micro_gateway.js
+
+# Terminal 03
+$> node micro_goods.js
+```
+
+## 99. 책에는 나와있지 않아
 
 #### 01. server.js 의 response function 의 선언법
 아래 코드는 콜백으로 돌아올 때 `TypeError [ERR_INVALID_ARG_TYPE]: The first argument must be one of type string or Buffer` 오류를 발생시킨다.
