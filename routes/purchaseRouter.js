@@ -1,4 +1,5 @@
 const mysqlWrapper = require('../dataAccess/mysqlWrapper');
+const redisWrapper = require('../dataAccess/redisWrapper');
 
 exports.onRequest = function (res, method, pathname, params, cb) {
 	console.log('Purchase router onRequest', arguments);
@@ -28,6 +29,15 @@ function register(method, pathname, params, cb) {
         response.errormessage = "Invalid Parameters";
         cb(response);
     } else {
+
+        // 요청 상품 데이터를 레디스 캐시로 검증함 
+        redisWrapper.get(params.goodsid, (err, result) => {
+            response.errorcode = 1;
+            response.errormessage = 'Redis failure';
+            cb(response);
+            return;
+        })
+
         let conn = mysqlWrapper.getConnection();
         conn.query("insert into purchases(userid, goodsid) values(? ,? )"
             , [params.userid, params.goodsid]

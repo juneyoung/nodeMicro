@@ -12,6 +12,7 @@ let mysqlWrapper = {
 		, user : 'mono'
 		, password : '1234'
 		, database : 'micronode'
+		, multipleStatements: true	// 기본은 false 이고 한번에 하나의 쿼리만 수행함. true 로 전환시 복수 쿼리 수행가능
 	}
 	, getConnection : function () {
 		let connection = this.mysql.createConnection(this.conn);
