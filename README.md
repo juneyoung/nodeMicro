@@ -13,7 +13,17 @@ $> node micro_gateway.js
 
 # Terminal 03
 $> node micro_goods.js
+
+# (Optional) Terminal 04
+$> elasticsearch
+
+# (Optional) Terminal 05
+$> redis-server
+
+# (Optional) Terminal 06
+$> node subProject/logging/micro_logs.js
 ```
+완성 버전을 구동하기 위해서 포트 `9200`에 Elasticsearch, 포트 `6379`에 Redis가 떠있어야 한다. 없이 실행하는 방법은 로깅 마이크로서비스를 구동하지 않으면 된다.
 
 ## 98. 의문점
 - 20180904 : 캐시 사용시 조회 API 에서 캐시로 가져오는 게 맞지 않을까? Redis 를 도입하면 결과적으로 CD 프로세스에 대해서 2개로 늘어나는 셈인데 감내할만한 코스트인지.
