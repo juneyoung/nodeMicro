@@ -6,6 +6,8 @@ const delimeter = '|';
 
 class tcpServer {
 	constructor (name, port, urls){
+		this.logTcpClient = null;
+
 		this.context = {
 			port : port
 			, name : name
@@ -39,6 +41,7 @@ class tcpServer {
 					} else if(arr[n] == '') {
 						break;
 					} else {
+						this.writeLog(arr[n]);
 						this.onRead(socket, JSON.parse(arr[n]));
 					}
 
@@ -83,6 +86,21 @@ class tcpServer {
 			}
 			// onRead
 			, (options, data) => {
+				// Logging Client 추가 
+				// context 에는 생성자에서 넣은 데이터가 있음 
+				/*
+					===== ONLY FOR LOGGING =====
+				*/
+				if(!this.logTcpClient && this.context.name != 'logs') {
+					for(let n in data.params) {
+						let microservice = data.params[n];
+						if( microservice.name == 'logs') {
+							this.connectToLog(microservice.host, microservice.port);
+							break;
+						}
+					}
+				}
+
 				onNoti(data);
 			}
 			// onEnd
@@ -101,6 +119,33 @@ class tcpServer {
 			}
 		}, 3000);
 
+	}
+
+
+	connectToLog (host, port) {
+		// 이벤트 수가 다른 것 같은데... onCreate, onRead, onEnd, onError
+		this.logTcpClient = new tcpClient(
+			host
+			, port
+			, (options) => {}								// onCreate
+			, (options) => { this.logTcpClient = null; }	// onRead
+			, (options) => { this.logTcpClient = null; }	// onEnd
+		);
+		this.logTcpClient.connect();
+	}
+
+	writeLog (log) {
+		if (this.logTcpClient) {
+			let packet = {
+				uri : '/logs'
+				, method : 'POST'
+				, key : 0
+				, params : log
+			}
+			this.logTcpClient.write(packet);
+		} else {
+			console.log('No logTcpClient found log : ', log);
+		}
 	}
 }
 
