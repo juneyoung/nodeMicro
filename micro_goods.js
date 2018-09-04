@@ -2,6 +2,7 @@
 
 const delimeter = '|';
 const business = require('./routes/goodsRouter.js');
+const cluster = require('cluster');
 
 class goods extends require('./subProject/distributed/tcpServer.js') {
 	constructor () {
@@ -25,4 +26,14 @@ class goods extends require('./subProject/distributed/tcpServer.js') {
 	}
 }
 
-new goods();
+if(cluster.isMaster) {
+	console.log(`Goods MicroService master process ${process.pid} is started. Fork 1 child process`);
+	cluster.fork();	//자식 프로세스 생성
+	cluster.on('exit', (worker, code, signal) => {
+		console.log(`Goods child process ${ worker.process.pid } died. Fork new one`);
+		cluster.fork();
+	});
+} else {
+	console.log(`Goods MicroService child process ${ process.pid } is stared`);
+	new goods();	
+}

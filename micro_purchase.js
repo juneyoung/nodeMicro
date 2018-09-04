@@ -2,6 +2,7 @@
 
 let delimeter = '|';
 let business = require('./routes/purchaseRouter.js');
+let cluster = require('cluster');
 
 class purchases extends require('./subProject/distributed/tcpServer.js') {
 	constructor () {
@@ -15,7 +16,7 @@ class purchases extends require('./subProject/distributed/tcpServer.js') {
 	}
 
 	onRead (socket, data) {
-		console.log('onRead Members MicroService ', socket.remoteAddress, socket.remotePort, data);
+		console.log('onRead Purchases MicroService ', socket.remoteAddress, socket.remotePort, data);
 
 		business.onRequest(socket, data.method, data.uri, data.params, (s, packet) => {
 			socket.write(JSON.stringify(packet) + delimeter);
@@ -23,4 +24,14 @@ class purchases extends require('./subProject/distributed/tcpServer.js') {
 	}
 }
 
-new purchases();
+if(cluster.isMaster) {
+	console.log(`Purchases MicroService master process ${process.pid} is started. Fork 1 child process`);
+	cluster.fork();
+	cluster.on('exit', (worker, code, signal) => {
+		console.log(`Purchases child process ${ worker.process.pid } died. Fork new one`);
+		cluster.fork();
+	})
+} else {
+	console.log(`Purchases MicroService child process ${ process.pid } is stared`);
+	new purchases();
+}
