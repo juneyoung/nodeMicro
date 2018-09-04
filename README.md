@@ -15,6 +15,9 @@ $> node micro_gateway.js
 $> node micro_goods.js
 ```
 
+## 98. 의문점
+- 20180904 : 캐시 사용시 조회 API 에서 캐시로 가져오는 게 맞지 않을까? Redis 를 도입하면 결과적으로 CD 프로세스에 대해서 2개로 늘어나는 셈인데 감내할만한 코스트인지.
+
 ## 99. 책에는 나와있지 않아
 
 #### 01. server.js 의 response function 의 선언법
@@ -47,3 +50,8 @@ mysql> flush privileges;
 
 #### 04. `node.js` export 의 특수성
 `export default function;` 구문이 동작하지 않음. `module.exports = function;` 으로 해야만 컴파일 가능 
+
+#### 05. 일부 라이브러리의 HOME 디렉토리 설정
+일반적으로 명령어를 손쉽게 사용하기 위해서 `$SOMETHING_HOME` 변수를 지정하는데 `$SOMETHING_HOME/bin` 안에 실행파일이 있음. 
+- redis 는 `src`
+- rabbitmq 는 `sbin`
